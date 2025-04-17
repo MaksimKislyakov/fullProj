@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Профиль пользователя</h1>
+
+{% if profile.profile_photo %}
+    <img src="{{ profile.profile_photo.url }}" alt="Фото профиля">
+{% else %}
+    <p>Фото не прикреплено</p>
+{% endif %}
+
+<p>ФИО: {{ profile.full_name }}</p>
+<p>Дата рождения: {{ profile.date_of_birth }}</p>
+<p>Комиссия: {{ profile.commission }}</p>
+<p>Уровень доступа: {{ profile.get_access_level_display }}</p>
+
+<h2>Мероприятия, в которых вы участвуете:</h2>
+<ul>
+    {% for event in events %}
+    <li><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a> ({{ event.date }})</li>
+    {% empty %}
+    <li>Вы не участвуете ни в одном мероприятии.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

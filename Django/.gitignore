@@ -1,0 +1,5 @@
+testsite/venv/
+
+testsite/.env
+
+testsite/djsite/client_secret.json

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block style_css %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 8px;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    td a {
+        text-decoration: none;
+        color: #000;
+    }
+    td div {
+        margin-bottom: 5px;
+    }
+    td ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<h1>Календарь (Месяц)</h1>
+
+<div>
+    <a href="?view=month&year={{ year }}&month={{ month|add:'-1' }}"><< Предыдущий месяц</a>
+    <span>{{ year }} - {{ month }}</span>
+    <a href="?view=month&year={{ year }}&month={{ month|add:'1' }}">Следующий месяц >></a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ПН</th>
+            <th>ВТ</th>
+            <th>СР</th>
+            <th>ЧТ</th>
+            <th>ПТ</th>
+            <th>СБ</th>
+            <th>ВС</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for week in dates %}
+        <tr>
+            {% for day in week %}
+            <td>
+                {% if day and day.month == month %}
+                    <div>
+                        <a href="/events/{{ day|date:'Y-m-d' }}/">
+                            {{ day|date:"d" }}
+                        </a>
+                    </div>
+                    {% if day in events_by_date %}
+                        <div>
+                            <strong>Есть мероприятия</strong>
+                            <ul>
+                                {% for event in events_by_date.day %}
+                                    <li>{{ event.title|truncatechars:100 }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
